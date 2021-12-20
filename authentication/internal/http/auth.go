@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func (h AuthHandler) Login(wr http.ResponseWriter, req *http.Request) {
+func (h *AuthHandler) Login(wr http.ResponseWriter, req *http.Request) {
 
 	var info AuthRequest
 

@@ -15,7 +15,7 @@ func NewAuthRepository(db *gorm.DB) *AuthRepository {
 	}
 }
 
-func (repo AuthRepository) GetUser(login string, password uint32) (model.User, error) {
+func (repo *AuthRepository) GetUser(login string, password uint32) (model.User, error) {
 
 	var user model.User
 

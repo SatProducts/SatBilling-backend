@@ -21,7 +21,7 @@ func NewAuthUseCase(repo auth.Repository, signKey []byte) *AuthUseCase {
 	}
 }
 
-func (uc AuthUseCase) GenerateJWT(login, password string) (string, error) {
+func (uc *AuthUseCase) GenerateJWT(login, password string) (string, error) {
 
 	user, err := uc.Repository.GetUser(
 		login,

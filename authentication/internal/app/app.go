@@ -5,7 +5,6 @@ import (
 	"podbilling/authentication/internal/repository"
 	"podbilling/authentication/internal/usecase"
 	db "podbilling/authentication/pkg/db"
-	"podbilling/authentication/model"
 
 	"net/http"
 	"os"
@@ -20,7 +19,6 @@ type App struct {
 func NewApp() *App {
 	
 	serviceDB := db.ConnectDB(os.Getenv("DB_NAME"))
-	serviceDB.AutoMigrate(&model.User{})
 
 	repo := repository.NewAuthRepository(
 		serviceDB,
@@ -34,7 +32,7 @@ func NewApp() *App {
 	h := handler.NewAuthHandler(uc)
 
 	server := &http.Server{
-		Addr:         os.Getenv("HOST"),
+		Addr:         "127.0.0.1:8082",
 		WriteTimeout: 5 * time.Second,
 		ReadTimeout:  5 * time.Second,
 	}
