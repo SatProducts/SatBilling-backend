@@ -10,9 +10,13 @@ type User struct {
 	Login string `json:"login"`
 	// The password is stored as a hash number
 	Password    uint32 `json:"password"`
+	Permissions uint8
 }
 
 type CustomClaims struct {
 	*jwt.StandardClaims
-	User User
+
+	ID    uint
+	Login string
+	Permissions uint8
 }

@@ -5,5 +5,5 @@ import (
 )
 
 type Repository interface {
-	GetUser(login string, password uint32) (model.User, error)
+	GetUser(login, password string) (model.User, error)
 }

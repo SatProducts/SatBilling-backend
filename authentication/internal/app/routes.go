@@ -2,7 +2,6 @@ package app
 
 import (
 	"github.com/gorilla/mux"
-	mw "podbilling/authentication/pkg/middleware"
 	"log"
 )
 
@@ -12,8 +11,6 @@ func (app *App) Route() {
 	// r.Schemes("https")
 
 	r.HandleFunc("/login/", app.Handler.Login).Methods("POST")
-
-	r.Use(mw.LoggerMW)
 
 	(*app).Server.Handler = r
 

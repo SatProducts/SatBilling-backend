@@ -18,7 +18,7 @@ type App struct {
 
 func NewApp() *App {
 	
-	serviceDB := db.ConnectDB(os.Getenv("DB_NAME"))
+	serviceDB := db.ConnectDB()
 
 	repo := repository.NewAuthRepository(
 		serviceDB,
@@ -32,7 +32,7 @@ func NewApp() *App {
 	h := handler.NewAuthHandler(uc)
 
 	server := &http.Server{
-		Addr:         "127.0.0.1:8082",
+		Addr:         os.Getenv("HOST"),
 		WriteTimeout: 5 * time.Second,
 		ReadTimeout:  5 * time.Second,
 	}

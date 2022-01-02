@@ -5,7 +5,6 @@ import (
 	"time"
 
 	auth "podbilling/authentication/internal"
-	"podbilling/authentication/pkg/crypt"
 	"podbilling/authentication/model"
 )
 
@@ -25,7 +24,7 @@ func (uc *AuthUseCase) GenerateJWT(login, password string) (string, error) {
 
 	user, err := uc.Repository.GetUser(
 		login,
-		crypt.Encrypt(password),
+		password,
 	)
 
 	if err != nil {
@@ -33,7 +32,9 @@ func (uc *AuthUseCase) GenerateJWT(login, password string) (string, error) {
 	}
 
 	claims := model.CustomClaims{
-		User: user,
+		ID: user.ID,
+		Login: user.Login,
+		Permissions: user.Permissions,
 
 		StandardClaims: &jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 1000).Unix(),
