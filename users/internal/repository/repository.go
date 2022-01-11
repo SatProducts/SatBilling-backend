@@ -15,7 +15,7 @@ func NewUsersRepository(db *gorm.DB) *UsersRepository {
 	}
 }
 
-func (repo *UsersRepository) GetUserByID(id uint) (model.User, error) {
+func (repo *UsersRepository) GetByID(id uint) (model.User, error) {
 
 	var user model.User
 
@@ -24,7 +24,7 @@ func (repo *UsersRepository) GetUserByID(id uint) (model.User, error) {
 	return user, result.Error
 }
 
-func (repo *UsersRepository) GetUserByLogin(login string) (model.User, error) {
+func (repo *UsersRepository) GetByLogin(login string) (model.User, error) {
 
 	var user model.User
 
@@ -38,7 +38,7 @@ func (repo *UsersRepository) GetUserByLogin(login string) (model.User, error) {
 }
 
 
-func (repo *UsersRepository) CreateUser(login, password string, permissions uint8) error {
+func (repo *UsersRepository) Create(login, password string, permissions uint8) error {
 	
 	user := model.User{
 		Login: login,
@@ -52,17 +52,17 @@ func (repo *UsersRepository) CreateUser(login, password string, permissions uint
 	return result.Error
 }
 
-func (repo *UsersRepository) UpdateUser(user model.User) error {
+func (repo *UsersRepository) Update(user model.User) error {
 	result := repo.DB.Save(&user)
 	return result.Error
 }
 
-func (repo *UsersRepository) DeleteUser(id uint) error {
+func (repo *UsersRepository) Delete(id uint) error {
 	result := repo.DB.Delete(&model.User{}, id)
 	return result.Error
 }
 
-func (repo *UsersRepository) GetAllWorkers() ([]model.User, error) {
+func (repo *UsersRepository) GetWorkers() ([]model.User, error) {
 	
 	var workers []model.User
 

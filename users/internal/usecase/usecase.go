@@ -15,37 +15,37 @@ func NewUsersUseCase(repo users.Repository) *UsersUseCase {
 	}
 }
 
-func (uc *UsersUseCase) GetUser(id uint) (model.User, error) {
-	return uc.Repository.GetUserByID(id)
+func (uc *UsersUseCase) Get(id uint) (model.User, error) {
+	return uc.Repository.GetByID(id)
 }
 
-func (uc *UsersUseCase) CreateUser(login, password string, permissions uint8) error {
+func (uc *UsersUseCase) Create(login, password string, permissions uint8) error {
 
 	if login == "" || password == "" {
 		return users.EmptyFieldError
 	}
 
-	_, err := uc.Repository.GetUserByLogin(login)
+	_, err := uc.Repository.GetByLogin(login)
 
 	if err == nil {
 		return users.UserAlreadyExistsError
 	}
 
-	return uc.Repository.CreateUser(
+	return uc.Repository.Create(
 		login,
 		password,
 		permissions,
 	)
 }
 
-func (uc *UsersUseCase) UpdateUser(user model.User) error {
-	return uc.Repository.UpdateUser(user)
+func (uc *UsersUseCase) Update(user model.User) error {
+	return uc.Repository.Update(user)
 }
 
-func (uc *UsersUseCase) DeleteUser(id uint) error {
-	return uc.Repository.DeleteUser(id)
+func (uc *UsersUseCase) Delete(id uint) error {
+	return uc.Repository.Delete(id)
 }
 
-func (uc *UsersUseCase) GetAllWorkers() ([]model.User, error) {
-	return uc.Repository.GetAllWorkers()
+func (uc *UsersUseCase) GetWorkers() ([]model.User, error) {
+	return uc.Repository.GetWorkers()
 }

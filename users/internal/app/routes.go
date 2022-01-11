@@ -16,12 +16,12 @@ func (app *App) Route() {
 	r := mux.NewRouter().PathPrefix("/user").Subrouter()
 	// r.Schemes("https")
 
-	r.HandleFunc("/me/", app.WithAuthMW(app.Handler.GetSelfUser)).Methods("GET")
-	r.HandleFunc("/{id:[0-9]+}/", app.WithAuthMW(app.Handler.GetUserByID)).Methods("GET")
-	r.HandleFunc("/workers/", app.WithAuthMW(app.Handler.GetAllWorkers)).Methods("GET")
-	r.HandleFunc("/", app.WithAuthMW(app.Handler.CreateUser)).Methods("POST")
-	r.HandleFunc("/{id:[0-9]+}/", app.WithAuthMW(app.Handler.UpdateUser)).Methods("PUT")
-	r.HandleFunc("/{id:[0-9]+}/", app.WithAuthMW(app.Handler.DeleteUser)).Methods("DELETE")
+	r.HandleFunc("/me/", app.WithAuthMW(app.Handler.GetSelf)).Methods("GET")
+	r.HandleFunc("/{id:[0-9]+}/", app.WithAuthMW(app.Handler.Get)).Methods("GET")
+	r.HandleFunc("/workers/", app.WithAuthMW(app.Handler.GetWorkers)).Methods("GET")
+	r.HandleFunc("/", app.WithAuthMW(app.Handler.Create)).Methods("POST")
+	r.HandleFunc("/{id:[0-9]+}/", app.WithAuthMW(app.Handler.Update)).Methods("PUT")
+	r.HandleFunc("/{id:[0-9]+}/", app.WithAuthMW(app.Handler.Delete)).Methods("DELETE")
 
 	(*app).Server.Handler = r
 
