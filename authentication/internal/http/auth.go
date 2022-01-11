@@ -2,7 +2,6 @@ package http
 
 import (
 	"encoding/json"
-	common "podbilling/authentication/pkg/common"
 	"net/http"
 )
 
@@ -24,5 +23,5 @@ func (h *AuthHandler) Login(wr http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	common.ServeJSON(wr, AuthResponse{Token: token})
+	json.NewEncoder(wr).Encode(AuthResponse{Token: token})
 }

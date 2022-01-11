@@ -5,10 +5,10 @@ import (
 )
 
 type Repository interface {
-	CreateUser(login, password string, permissons uint8) error
-	GetUserByID(id uint) (model.User, error)
-	GetUserByLogin(login string) (model.User, error)
-	UpdateUser(user model.User) error
-	DeleteUser(id uint) error
-	GetAllWorkers() ([]model.User, error)
+	Create(login, password string, permissons uint8) error
+	GetByID(id uint) (model.User, error)
+	GetByLogin(login string) (model.User, error)
+	Update(user model.User) error
+	Delete(id uint) error
+	GetWorkers() ([]model.User, error)
 }

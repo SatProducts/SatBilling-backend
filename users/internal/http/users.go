@@ -4,25 +4,24 @@ import (
 	"strconv"
 	"encoding/json"
 	"podbilling/users/model"
-	common "podbilling/users/pkg/common"
 	"net/http"
 	"github.com/gorilla/mux"
 	"podbilling/users/internal"
 )
 
-func (h *UsersHandler) GetSelfUser(user model.CustomClaims, wr http.ResponseWriter, req *http.Request) {
+func (h *UsersHandler) GetSelf(user model.CustomClaims, wr http.ResponseWriter, req *http.Request) {
 
-	userModel, err := h.UseCase.GetUser(user.ID)
+	userModel, err := h.UseCase.Get(user.ID)
 
 	if err != nil {
 		http.Error(wr, err.Error(), http.StatusNotFound)
 		return
 	}
 
-	common.ServeJSON(wr, userModel)
+	json.NewEncoder(wr).Encode(userModel)
 }
 
-func (h *UsersHandler) GetUserByID(user model.CustomClaims, wr http.ResponseWriter, req *http.Request) {
+func (h *UsersHandler) Get(user model.CustomClaims, wr http.ResponseWriter, req *http.Request) {
 
 	if user.Permissions != model.ADMINISTRATOR {
 		http.Error(wr, users.NoPermissionsError.Error(), http.StatusForbidden)
@@ -31,17 +30,17 @@ func (h *UsersHandler) GetUserByID(user model.CustomClaims, wr http.ResponseWrit
 
 	userID, _ := strconv.Atoi(mux.Vars(req)["id"])
 
-	userModel, err := h.UseCase.GetUser(uint(userID))
+	userModel, err := h.UseCase.Get(uint(userID))
 
 	if err != nil {
 		http.Error(wr, err.Error(), http.StatusNotFound)
 		return
 	}
 
-	common.ServeJSON(wr, userModel)
+	json.NewEncoder(wr).Encode(userModel)
 }
 
-func (h *UsersHandler) CreateUser(user model.CustomClaims, wr http.ResponseWriter, req *http.Request) {
+func (h *UsersHandler) Create(user model.CustomClaims, wr http.ResponseWriter, req *http.Request) {
 
 	if user.Permissions != model.ADMINISTRATOR {
 		http.Error(wr, users.NoPermissionsError.Error(), http.StatusForbidden)
@@ -57,7 +56,7 @@ func (h *UsersHandler) CreateUser(user model.CustomClaims, wr http.ResponseWrite
 		return
 	}
 
-	err = h.UseCase.CreateUser(
+	err = h.UseCase.Create(
 		newUser.Login,
 		newUser.Password,
 		newUser.Permissions,
@@ -71,7 +70,7 @@ func (h *UsersHandler) CreateUser(user model.CustomClaims, wr http.ResponseWrite
 	wr.WriteHeader(http.StatusCreated)
 }
 
-func (h *UsersHandler) UpdateUser(user model.CustomClaims, wr http.ResponseWriter, req *http.Request) {
+func (h *UsersHandler) Update(user model.CustomClaims, wr http.ResponseWriter, req *http.Request) {
 
 	if user.Permissions != model.ADMINISTRATOR {
 		http.Error(wr, users.NoPermissionsError.Error(), http.StatusForbidden)
@@ -80,7 +79,7 @@ func (h *UsersHandler) UpdateUser(user model.CustomClaims, wr http.ResponseWrite
 
 	userID, _ := strconv.Atoi(mux.Vars(req)["id"])
 
-	userModel, err := h.UseCase.GetUser(uint(userID))
+	userModel, err := h.UseCase.Get(uint(userID))
 
 	if err != nil {
 		http.Error(wr, err.Error(), http.StatusNotFound)
@@ -92,7 +91,7 @@ func (h *UsersHandler) UpdateUser(user model.CustomClaims, wr http.ResponseWrite
 		return
 	}
 
-	if err = h.UseCase.UpdateUser(userModel); err != nil {
+	if err = h.UseCase.Update(userModel); err != nil {
 		http.Error(wr, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -100,7 +99,7 @@ func (h *UsersHandler) UpdateUser(user model.CustomClaims, wr http.ResponseWrite
 	wr.WriteHeader(http.StatusOK)
 }
 
-func (h *UsersHandler) DeleteUser(user model.CustomClaims, wr http.ResponseWriter, req *http.Request) {
+func (h *UsersHandler) Delete(user model.CustomClaims, wr http.ResponseWriter, req *http.Request) {
 
 	if user.Permissions != model.ADMINISTRATOR {
 		http.Error(wr, users.NoPermissionsError.Error(), http.StatusForbidden)
@@ -109,14 +108,14 @@ func (h *UsersHandler) DeleteUser(user model.CustomClaims, wr http.ResponseWrite
 	
 	userID, _ := strconv.Atoi(mux.Vars(req)["id"])
 
-	_, err := h.UseCase.GetUser(uint(userID))
+	_, err := h.UseCase.Get(uint(userID))
 
 	if err != nil {
 		http.Error(wr, err.Error(), http.StatusNotFound)
 		return
 	}
 
-	if err = h.UseCase.DeleteUser(uint(userID)); err != nil {
+	if err = h.UseCase.Delete(uint(userID)); err != nil {
 		http.Error(wr, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -124,19 +123,19 @@ func (h *UsersHandler) DeleteUser(user model.CustomClaims, wr http.ResponseWrite
 	wr.WriteHeader(http.StatusOK)
 }
 
-func (h *UsersHandler) GetAllWorkers(user model.CustomClaims, wr http.ResponseWriter, req *http.Request) {
+func (h *UsersHandler) GetWorkers(user model.CustomClaims, wr http.ResponseWriter, req *http.Request) {
 
 	if user.Permissions != model.ADMINISTRATOR {
 		http.Error(wr, users.NoPermissionsError.Error(), http.StatusForbidden)
 		return
 	}
 
-	workers, err := h.UseCase.GetAllWorkers()
+	workers, err := h.UseCase.GetWorkers()
 
 	if err != nil {
 		http.Error(wr, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	common.ServeJSON(wr, workers)
+	json.NewEncoder(wr).Encode(workers)
 }
