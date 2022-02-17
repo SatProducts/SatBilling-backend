@@ -33,3 +33,8 @@ type Task struct {
 	Text     string `json:"text"`
 	Address  string `json:"address"`
 }
+
+type TaskAction struct {
+	Task
+	TaskID uint `json:"task_id"`
+}

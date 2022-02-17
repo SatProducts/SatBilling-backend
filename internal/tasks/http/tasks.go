@@ -25,8 +25,9 @@ func (h *Handler) Get(c *fiber.Ctx) error {
 	}
 
 	userID := uint(user["id"].(float64))
+	permissions := uint8(user["permissions"].(float64))
 
-	if userID != taskModel.FromUser && userID != taskModel.ForUser && user["permissions"] != 3 {
+	if userID != taskModel.FromUser && userID != taskModel.ForUser && permissions != 3 {
 		return fiber.ErrForbidden
 	}
 
